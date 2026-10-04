@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and run decomp tests
+        run: make test-decomp
+
+      - name: Build and run sanitized tests
+        run: make test-decomp-sanitize
+
+      - name: Build and run game tests
+        run: make test-game
+
+      - name: Lint symbols
+        run: make lint
