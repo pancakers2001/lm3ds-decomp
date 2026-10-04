@@ -7104,51 +7104,62 @@ void svc_17_store(uint32_t *object, uint32_t value)
     *object = value;
 }
 
-uint32_t swap_byte(uint8_t *object, uint8_t value)
+uint32_t swap_byte(uint8_t value)
 {
-    uint8_t old = *object;
-    *object = value;
+    static uint8_t dat_byte;
+    uint8_t old = dat_byte;
+    dat_byte = value;
     return old;
 }
 
-uint32_t check_mask_7_is_6(const uint32_t *object)
+uint32_t check_word_18_mask_7_zero(void)
 {
-    return (object[6] & 7) == 6;
+    static uint32_t dat_storage[7];
+    return (dat_storage[6] & 7) == 0;
 }
 
-uint32_t get_word_18_mask_7(const uint32_t *object)
+uint32_t get_word_18_mask_7(void)
 {
-    return object[6] & 7;
+    static uint32_t dat_storage[7];
+    return dat_storage[6] & 7;
 }
 
-uint32_t return_word_10(const uint32_t *object)
+uint32_t return_word_10(void)
 {
-    return object[4];
+    static uint32_t dat_storage[5];
+    return dat_storage[4];
 }
 
-uint32_t return_word_14(const uint32_t *object)
+uint32_t return_word_14(void)
 {
-    return object[5];
+    static uint32_t dat_storage[6];
+    return dat_storage[5];
 }
 
-uint32_t return_word_18(const uint32_t *object)
+uint32_t return_word_18(void)
 {
-    return object[6];
+    static uint32_t dat_storage[7];
+    return dat_storage[6];
 }
 
-uint32_t return_word_1c(const uint32_t *object)
+uint32_t return_word_c(void)
 {
-    return object[7];
+    static uint32_t dat_storage[4];
+    return dat_storage[3];
 }
 
-void set_byte_6(uint8_t *object, uint8_t value)
+void set_byte_6(uint8_t value)
 {
-    object[6] = value;
+    static uint8_t dat_storage[7];
+    dat_storage[6] = value;
+    (void)dat_storage;
 }
 
-void set_byte_5(uint8_t *object, uint8_t value)
+void set_byte_5(uint8_t value)
 {
-    object[5] = value;
+    static uint8_t dat_storage[6];
+    dat_storage[5] = value;
+    (void)dat_storage;
 }
 
 void set_1e_low2(uint32_t *object, uint16_t value)
@@ -7621,16 +7632,15 @@ void set_dat_byte_d(uint8_t value)
 
 uint32_t svc_8_store(uint32_t *object, uint32_t a, uint32_t b, uint32_t c, uint32_t d)
 {
-    (void)a; (void)b; (void)c;
-    *object = d;
+    (void)b; (void)c;
+    *object = a;
     return d;
 }
 
 void svc_2b_store(uint32_t *object, uint32_t a, uint32_t b)
 {
-    (void)a;
-    *object = b;
-    object[1] = 0;
+    *object = a;
+    object[1] = b;
 }
 
 void init_list_heads(uint32_t *object)
@@ -7813,4 +7823,624 @@ uint32_t return_dat_d(void)
 {
     static uint32_t dat_storage;
     return dat_storage;
+}
+
+void set_dat_indexed(int32_t index, uint32_t value)
+{
+    static uint32_t dat_table[16];
+    if ((uint32_t)index < 16) dat_table[index] = value;
+    (void)dat_table;
+}
+
+void store_triple_150_to_dat(uint32_t *object)
+{
+    static uint32_t dat_storage[3];
+    dat_storage[0] = object[0x150 / 4];
+    dat_storage[1] = object[0x154 / 4];
+    dat_storage[2] = 0;
+    (void)dat_storage;
+}
+
+uint32_t get_table_byte_bounded(uint32_t index)
+{
+    static const uint8_t table[14] = {0};
+    if (index > 0xd) return 0xffffffff;
+    return table[index];
+}
+
+uint32_t return_dat_c_b(void)
+{
+    static uint32_t dat_storage[4];
+    return dat_storage[3];
+}
+
+uint8_t return_dat_byte_a(void)
+{
+    static uint8_t dat_storage[11];
+    return dat_storage[10];
+}
+
+void set_pair_dat_14_54(uint32_t a, uint32_t b)
+{
+    static uint32_t dat_storage[22];
+    dat_storage[5] = a;
+    dat_storage[21] = b;
+    (void)dat_storage;
+}
+
+int32_t return_dat_byte_d(void)
+{
+    static uint8_t dat_storage[14];
+    return (int32_t)(int8_t)dat_storage[13];
+}
+
+void set_dat_byte_9(void)
+{
+    static uint8_t dat_storage[10];
+    dat_storage[9] = 1;
+    (void)dat_storage;
+}
+
+void set_dat_8_b(uint32_t value)
+{
+    static uint32_t dat_storage[3];
+    dat_storage[2] = value;
+    (void)dat_storage;
+}
+
+void set_dat_to_1_c(void)
+{
+    static uint32_t dat_storage;
+    dat_storage = 1;
+    (void)dat_storage;
+}
+
+uint32_t return_dat_e(void)
+{
+    static uint32_t dat_storage;
+    return dat_storage;
+}
+
+void set_dat_byte_1_c(uint8_t value)
+{
+    static uint8_t dat_storage[2];
+    dat_storage[1] = value;
+    (void)dat_storage;
+}
+
+void set_dat_4_b(uint32_t value)
+{
+    static uint32_t dat_storage[2];
+    dat_storage[1] = value;
+    (void)dat_storage;
+}
+
+uint32_t get_table_word(int32_t index)
+{
+    static const uint32_t table[16] = {0};
+    return table[index & 0xf];
+}
+
+int32_t return_signed_dat_byte(void)
+{
+    static int8_t dat_storage;
+    return (int32_t)dat_storage;
+}
+
+uint32_t return_dat_4(void)
+{
+    static uint32_t dat_storage[2];
+    return dat_storage[1];
+}
+
+uint32_t map_1_2_4_to_0_1_2(uint32_t value)
+{
+    if (value == 2) return 1;
+    if (value == 4) return 2;
+    return 0;
+}
+
+void set_dat_4_c(uint32_t value)
+{
+    static uint32_t dat_storage[2];
+    dat_storage[1] = value;
+    (void)dat_storage;
+}
+
+uint32_t check_nested_byte_b410_is_2(uint32_t *object)
+{
+    uint8_t *sub = (uint8_t *)(uintptr_t)object[0];
+    return sub[0xb410] == 2;
+}
+
+uint32_t get_byte_880_mask_7_shift_2(uint32_t *object)
+{
+    uint8_t *sub = (uint8_t *)(uintptr_t)object[0];
+    return (sub[0x880] & 7) >> 2;
+}
+
+uint32_t get_byte_880_mask_3fff_shift_d(uint32_t *object)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0];
+    return (sub[0x880 / 4] & 0x3fff) >> 0xd;
+}
+
+uint32_t return_dat_4_b(void)
+{
+    static uint32_t dat_storage[2];
+    return dat_storage[1];
+}
+
+uint32_t return_dat_f(void)
+{
+    static uint32_t dat_storage;
+    return dat_storage;
+}
+
+int32_t get_nested_table_byte_5(uint8_t *object)
+{
+    static uint32_t dat_table[16];
+    uint32_t *entry = (uint32_t *)(uintptr_t)dat_table[object[0] & 0xf];
+    if (!entry) return 0;
+    return (int32_t)*(int8_t *)((uint8_t *)entry + 5);
+}
+
+void init_record_4_10(uint32_t *object)
+{
+    object[0] = 0;
+    *(uint16_t *)(object + 1) = 0;
+    *(uint8_t *)((uint8_t *)object + 6) = 0;
+    *(uint16_t *)(object + 2) = 0;
+    *(uint8_t *)((uint8_t *)object + 10) = 0;
+}
+
+void init_record_208(uint32_t *object)
+{
+    object[1] = 0;
+    object[0] = 0;
+    *(uint16_t *)(object + 0x82) = 0;
+    *(uint8_t *)((uint8_t *)object + 0x20a) = 0;
+}
+
+void init_pair_0_1(uint32_t *object)
+{
+    object[0] = 0;
+    object[1] = 0;
+}
+
+void init_quad_0_1_2_3(uint32_t *object)
+{
+    object[1] = 0;
+    object[0] = 0;
+    object[2] = 0;
+    object[3] = 0;
+}
+
+uint32_t svc_28_return(uint32_t value)
+{
+    return value;
+}
+
+uint32_t svc_1e_store(uint32_t *object, uint32_t a, uint32_t b, uint32_t c, uint32_t d)
+{
+    (void)b; (void)c;
+    *object = a;
+    return d;
+}
+
+uint32_t svc_10_return(uint32_t value)
+{
+    return value;
+}
+
+uint32_t return_dat_4_c(void)
+{
+    static uint32_t dat_storage[2];
+    return dat_storage[1];
+}
+
+uint32_t return_dat_10_b(void)
+{
+    static uint32_t dat_storage;
+    return dat_storage;
+}
+
+int32_t get_table_halfword_signed(int32_t index)
+{
+    static const int16_t table[16] = {0};
+    return (int32_t)table[index & 0xf];
+}
+
+void init_mask_record(uint32_t *object)
+{
+    object[4 / 4] = 0xff000000;
+    object[8 / 4] = 0x00ff0000;
+    object[0xc / 4] = 0x00ffffff;
+    object[0x10 / 4] = 0xff00ffff;
+    object[0x14 / 4] = 0;
+}
+
+void init_record_c_string(uint32_t *object, uint16_t value, uint32_t extra)
+{
+    *(uint16_t *)(object + 3) = value;
+    object[0] = 0;
+    object[1] = 0;
+    object[4] = extra;
+    object[2] = 0;
+}
+
+uint32_t return_dat_11(void)
+{
+    static uint32_t dat_storage;
+    return dat_storage;
+}
+
+uint32_t return_after_call_b(uint32_t value)
+{
+    return value;
+}
+
+uint32_t return_dat_12(void)
+{
+    static uint32_t dat_storage;
+    return dat_storage;
+}
+
+void set_dat_d(uint32_t value)
+{
+    static uint32_t dat_storage;
+    dat_storage = value;
+    (void)dat_storage;
+}
+
+int32_t return_dat_byte_67(void)
+{
+    static uint8_t dat_storage[0x68];
+    return (int32_t)(int8_t)dat_storage[0x67];
+}
+
+int32_t return_dat_byte_1_b(void)
+{
+    static uint8_t dat_storage[2];
+    return (int32_t)(int8_t)dat_storage[1];
+}
+
+uint32_t check_dat_is_8(void)
+{
+    static uint32_t dat_storage;
+    return dat_storage == 8;
+}
+
+uint32_t return_dat_138(void)
+{
+    static uint32_t dat_storage[0x13c / 4];
+    return dat_storage[0x138 / 4];
+}
+
+void set_dat_to_1_d(void)
+{
+    static uint32_t dat_storage;
+    dat_storage = 1;
+    (void)dat_storage;
+}
+
+void set_dat_halfword_1c(uint16_t value)
+{
+    static uint16_t dat_storage[0x1e / 2];
+    dat_storage[0x1c / 2] = value;
+    (void)dat_storage;
+}
+
+void set_dat_byte_8_b(void)
+{
+    static uint8_t dat_storage[9];
+    dat_storage[8] = 1;
+    (void)dat_storage;
+}
+
+uint32_t return_dat_13c(void)
+{
+    static uint32_t dat_storage[0x140 / 4];
+    return dat_storage[0x13c / 4];
+}
+
+int32_t return_dat_byte_69(void)
+{
+    static uint8_t dat_storage[0x6a];
+    return (int32_t)(int8_t)dat_storage[0x69];
+}
+
+void set_dat_byte_465(void)
+{
+    static uint8_t dat_storage[0x466];
+    dat_storage[0x465] = 1;
+    (void)dat_storage;
+}
+
+void clear_dat_b(void)
+{
+    static uint32_t dat_storage;
+    dat_storage = 0;
+    (void)dat_storage;
+}
+
+void clear_dat_byte_465(void)
+{
+    static uint8_t dat_storage[0x466];
+    dat_storage[0x465] = 0;
+    (void)dat_storage;
+}
+
+static uint8_t dat_byte_17_storage[0x18];
+
+uint8_t return_dat_byte_17(void)
+{
+    return dat_byte_17_storage[0x17];
+}
+
+uint32_t set_dat_byte_17_if_positive(int32_t value)
+{
+    if (value < 0) return 0xffffffff;
+    dat_byte_17_storage[0x17] = (uint8_t)value;
+    return 0;
+}
+
+void clear_dat_and_5c(void)
+{
+    static uint8_t dat_storage[0x60];
+    dat_storage[0] = 0;
+    *(uint32_t *)(dat_storage + 0x5c) = 0;
+    (void)dat_storage;
+}
+
+uint8_t return_dat_byte_17_b(void)
+{
+    static uint8_t dat_storage[0x18];
+    return dat_storage[0x17];
+}
+
+uint32_t return_dat_40(void)
+{
+    static uint32_t dat_storage[0x44 / 4];
+    return dat_storage[0x40 / 4];
+}
+
+int32_t get_float_dat_4_as_int_or_neg(void)
+{
+    static uint32_t dat_ptr[2];
+    if (dat_ptr[0] == 0) return -1;
+    return (int32_t)*(float *)(uintptr_t)(dat_ptr[0] + 4);
+}
+
+uint32_t pop_dat_4(void)
+{
+    static uint32_t dat_storage[2];
+    uint32_t value = dat_storage[1];
+    dat_storage[1] = 0;
+    return value;
+}
+
+void set_dat_to_1_e(void)
+{
+    static uint32_t dat_storage;
+    dat_storage = 1;
+    (void)dat_storage;
+}
+
+uint32_t add_to_dat_28_wrap(uint32_t value)
+{
+    static uint32_t dat_storage[0x2c / 4];
+    uint32_t sum = value + dat_storage[0x28 / 4];
+    if (sum < dat_storage[0x28 / 4]) sum = 0xffffffff;
+    dat_storage[0x28 / 4] = sum;
+    return 0;
+}
+
+uint16_t get_nested_table_halfword_4(int32_t idx1, int32_t idx2)
+{
+    static uint32_t dat_table[16];
+    uint32_t *sub = (uint32_t *)(uintptr_t)dat_table[(idx1 & 0xf) * 2 + 1];
+    if (!sub) return 0;
+    return *(uint16_t *)((uint8_t *)sub + idx2 * 0x20 + 4);
+}
+
+uint32_t get_nested_table_word_c(int32_t idx1, int32_t idx2)
+{
+    static uint32_t dat_table[16];
+    uint32_t *sub = (uint32_t *)(uintptr_t)dat_table[(idx1 & 0xf) * 2 + 1];
+    if (!sub) return 0;
+    return *(uint32_t *)((uint8_t *)sub + idx2 * 0x20 + 0xc);
+}
+
+uint32_t get_nested_table_20_word_8(int32_t idx1, int32_t idx2)
+{
+    static uint32_t dat_table[16];
+    uint32_t *sub = (uint32_t *)(uintptr_t)dat_table[(idx1 & 0xf) * 2 + 1];
+    if (!sub) return 0;
+    return *(uint32_t *)((uint8_t *)sub + idx2 * 0x20 + 8);
+}
+
+uint32_t get_nested_table_c_word_8(int32_t index)
+{
+    static uint32_t dat_table[32];
+    return dat_table[(index & 0x1f) * 3 + 2];
+}
+
+uint32_t get_table_word_bounded_19(uint32_t index)
+{
+    static const uint32_t table[26] = {0};
+    if (index > 0x19) index = 0;
+    return table[index];
+}
+
+uint32_t check_dat_nonzero(void)
+{
+    static uint32_t dat_storage;
+    return dat_storage != 0;
+}
+
+uint8_t get_table_18_byte_c(int32_t index)
+{
+    static const uint8_t table[16 * 0x18];
+    return table[(index & 0xf) * 0x18 + 0xc];
+}
+
+uint32_t get_table_18_word_8_or_2(int32_t index, uint32_t mode)
+{
+    static const uint32_t table[16 * 6];
+    uint32_t value = table[(index & 0xf) * 6 + 2];
+    if (mode == 0x16) value |= 2;
+    return value;
+}
+
+uint32_t return_dat_20(void)
+{
+    static uint32_t dat_storage[9];
+    return dat_storage[8];
+}
+
+uint32_t check_dat_20_nonzero(void)
+{
+    static uint32_t dat_storage[9];
+    return dat_storage[8] != 0;
+}
+
+uint8_t return_byte_49f2(const uint8_t *object)
+{
+    return object[0x49f2];
+}
+
+uint32_t check_word_88_nonzero(const uint32_t *object)
+{
+    return object[0x88 / 4] != 0;
+}
+
+uint32_t get_table_word_bounded_16(uint32_t index)
+{
+    static const uint32_t table[23] = {0};
+    if (index >= 0x17) return 0xffffffff;
+    return table[index];
+}
+
+void set_dat_byte(uint8_t value)
+{
+    static uint8_t dat_storage;
+    dat_storage = value;
+    (void)dat_storage;
+}
+
+void copy_pair_bc8(uint32_t *dest, const uint8_t *src)
+{
+    dest[0] = *(const uint32_t *)(src + 0xbc8);
+    dest[1] = *(const uint32_t *)(src + 0xbcc);
+}
+
+void unlink_and_clear_18(uint32_t *list, uint8_t *node)
+{
+    remove_list_entry(list, (uint32_t *)(node + 0x110));
+    *(uint32_t *)(node + 0x18) = 0;
+}
+
+void clamp_word_34_to_2c(uint32_t *object, uint32_t value)
+{
+    if (value <= object[0x2c / 4]) {
+        object[0x34 / 4] = value;
+    }
+}
+
+uint32_t get_word_and_halfword(const uint32_t *object, uint32_t *high_out)
+{
+    *high_out = object[0];
+    return *(const uint16_t *)(object + 1);
+}
+
+void copy_strided_c_1c_2c(const uint8_t *object, uint32_t *dest)
+{
+    dest[0] = *(const uint32_t *)(object + 0xc);
+    dest[1] = *(const uint32_t *)(object + 0x1c);
+    dest[2] = *(const uint32_t *)(object + 0x2c);
+}
+
+void copy_word_and_halfword(uint32_t *dest, const uint32_t *src)
+{
+    dest[0] = src[0];
+    *(uint16_t *)(dest + 1) = *(const uint16_t *)(src + 1);
+}
+
+uint32_t *get_indexed_380_entry(uint32_t *object, int32_t index)
+{
+    uint32_t *entry = (uint32_t *)((uint8_t *)(uintptr_t)object[0x10 / 4] + index * 0x380);
+    if (entry[4 / 4] == 0) return 0;
+    return entry;
+}
+
+uint32_t get_table_1c_word_18(int32_t index)
+{
+    static const uint32_t table[16 * 7];
+    return table[(index & 0xf) * 7 + 6];
+}
+
+uint32_t get_nested_table_20_word(int32_t idx1, int32_t idx2)
+{
+    static uint32_t dat_table[16];
+    uint32_t *sub = (uint32_t *)(uintptr_t)dat_table[(idx1 & 0xf) * 2 + 1];
+    if (!sub) return 0;
+    return *(uint32_t *)((uint8_t *)sub + idx2 * 0x20);
+}
+
+uint32_t get_nested_table_18_word_10(int32_t idx1, int32_t idx2)
+{
+    static uint32_t dat_table[16];
+    uint32_t *sub = (uint32_t *)(uintptr_t)dat_table[(idx1 & 0xf) * 2 + 1];
+    if (!sub) return 0;
+    return *(uint32_t *)((uint8_t *)sub + idx2 * 0x18 + 0x10);
+}
+
+uint32_t get_nested_table_18_word_4(int32_t idx1, int32_t idx2)
+{
+    static uint32_t dat_table[16];
+    uint32_t *sub = (uint32_t *)(uintptr_t)dat_table[(idx1 & 0xf) * 2 + 1];
+    if (!sub) return 0;
+    return *(uint32_t *)((uint8_t *)sub + idx2 * 0x18 + 4);
+}
+
+uint32_t get_nested_table_18_word_14(int32_t idx1, int32_t idx2)
+{
+    static uint32_t dat_table[16];
+    uint32_t *sub = (uint32_t *)(uintptr_t)dat_table[(idx1 & 0xf) * 2 + 1];
+    if (!sub) return 0;
+    return *(uint32_t *)((uint8_t *)sub + idx2 * 0x18 + 0x14);
+}
+
+uint32_t get_nested_table_18_word_c(int32_t idx1, int32_t idx2)
+{
+    static uint32_t dat_table[16];
+    uint32_t *sub = (uint32_t *)(uintptr_t)dat_table[(idx1 & 0xf) * 2 + 1];
+    if (!sub) return 0;
+    return *(uint32_t *)((uint8_t *)sub + idx2 * 0x18 + 0xc);
+}
+
+uint8_t get_entry_and_byte(uint32_t *object, int32_t index, uint32_t *entry_out)
+{
+    static const uint32_t dat_entries[16 * 16];
+    static const uint8_t dat_bytes[16];
+    (void)object;
+    *entry_out = (uint32_t)(uintptr_t)&dat_entries[(index & 0xf) * 16];
+    return dat_bytes[index & 0xf];
+}
+
+void select_word_by_byte_61(uint32_t *dest, const uint8_t *src)
+{
+    if (src[0x61] == 1) {
+        *dest = 0;
+    } else {
+        *dest = 0xffffffff;
+    }
+}
+
+void init_triple_dat(uint32_t *object)
+{
+    object[1] = 0;
+    object[0] = 0;
+    object[2] = 0;
 }
