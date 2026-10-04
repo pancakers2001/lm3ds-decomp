@@ -1,10 +1,6 @@
 # Luigi's Mansion (3DS) Decompilation
 
-**Functions ported:** 901 / 11978 (7.5%)
-
-```
-▓▓▓░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  7.5%
-```
+![Progress](docs/progress.svg)
 
 Work-in-progress decompilation of *Luigi's Mansion* (Nintendo 3DS, 2018, Grezzo).
 
