@@ -1,0 +1,15 @@
+# Copyrighted game data - never commit
+baserom/*
+!baserom/.gitkeep
+*.3ds
+*.cci
+*.cia
+*.cxi
+extracted/
+build/
+asm/
+
+# Python
+__pycache__/
+.venv/
+*.pyc
