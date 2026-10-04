@@ -1,5 +1,9 @@
 # Luigi's Mansion (3DS) Decompilation
 
+**Functions ported:** 901 / 11978 (7.5%)
+
+![Progress](https://progress-bar.dev/8/?scale=100&title=&width=600&color=green)
+
 Work-in-progress decompilation of *Luigi's Mansion* (Nintendo 3DS, 2018, Grezzo).
 
 This repository contains **no game assets or code**. You must supply your own legally dumped, **decrypted** copy.
