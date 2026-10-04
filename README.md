@@ -107,3 +107,13 @@ mapped.
 ## Notes
 
 The retail binary was likely built with ARM's RVCT/armcc; a byte-matching build requires that toolchain, which is not included.
+
+## License
+
+This project's decompiled source code is licensed under the [MIT License](LICENSE).
+
+*Luigi's Mansion* and all related game assets, code, and trademarks are the
+property of Nintendo and Grezzo. This project is a non-commercial, fan-made
+reverse-engineering effort for educational and preservation purposes. It
+contains no copyrighted game content — you must supply your own legally
+obtained copy of the game.
