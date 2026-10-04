@@ -8341,3 +8341,126 @@ void init_triple_dat(uint32_t *object)
     object[0] = 0;
     object[2] = 0;
 }
+
+uint32_t set_halfword_6c_to_2_if_70_ge(uint32_t *object, int32_t threshold)
+{
+    if (threshold <= (int32_t)object[0x70 / 4]) {
+        *(uint16_t *)((uint8_t *)object + 0x6c) = 2;
+    }
+    return 1;
+}
+
+uint32_t set_halfword_c_to_100_if_f3_neg(uint32_t *object)
+{
+    uint32_t *mid = (uint32_t *)(uintptr_t)object[1];
+    uint32_t *sub = (uint32_t *)(uintptr_t)mid[0xb08 / 4];
+    if (*(int8_t *)((uint8_t *)sub + 0xf3) == -1) {
+        *(uint16_t *)((uint8_t *)object + 0xc) = 0x100;
+    }
+    return 1;
+}
+
+uint32_t set_halfword_c_to_0_if_f3_zero(uint32_t *object)
+{
+    uint32_t *mid = (uint32_t *)(uintptr_t)object[1];
+    uint32_t *sub = (uint32_t *)(uintptr_t)mid[0xb08 / 4];
+    if (*(int8_t *)((uint8_t *)sub + 0xf3) == 0) {
+        *(uint16_t *)((uint8_t *)object + 0xc) = 0;
+    }
+    return 1;
+}
+
+uint32_t set_halfword_6c_to_1_if_70_gt(uint32_t *object, int32_t threshold)
+{
+    if (threshold < (int32_t)object[0x70 / 4]) {
+        *(uint16_t *)((uint8_t *)object + 0x6c) = 1;
+    }
+    return 1;
+}
+
+void or_nested_e8_280_set_df(uint32_t *object)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0x14 / 4];
+    *(uint8_t *)((uint8_t *)sub + 0xdf) = 0;
+    *(uint16_t *)((uint8_t *)sub + 0xe8) |= 0x280;
+}
+
+void or_nested_e8_280_set_de(uint32_t *object)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0x14 / 4];
+    *(uint8_t *)((uint8_t *)sub + 0xde) = 0;
+    *(uint16_t *)((uint8_t *)sub + 0xe8) |= 0x280;
+}
+
+void or_nested_e8_280_set_dd(uint32_t *object)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0x14 / 4];
+    *(uint8_t *)((uint8_t *)sub + 0xdd) = 0;
+    *(uint16_t *)((uint8_t *)sub + 0xe8) |= 0x280;
+}
+
+void or_nested_e8_280_set_dc(uint32_t *object)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0x14 / 4];
+    *(uint8_t *)((uint8_t *)sub + 0xdc) = 0;
+    *(uint16_t *)((uint8_t *)sub + 0xe8) |= 0x280;
+}
+
+uint8_t return_dat_byte_20d(void)
+{
+    static uint8_t dat_storage[0x20e];
+    return dat_storage[0x20d];
+}
+
+void add_scaled_to_14c(float *object)
+{
+    static const float dat_scale[2] = {1.0f, 1.0f};
+    object[0x14c / 4] = object[0x14c / 4] + dat_scale[0] * dat_scale[1];
+}
+
+int32_t init_word_and_halfword_ffff(uint32_t *object)
+{
+    object[0] = 0;
+    *(uint16_t *)(object + 1) = 0xffff;
+    return 0;
+}
+
+void clear_word_d(uint32_t *object)
+{
+    object[0xd] = 0;
+}
+
+void set_word_34(uint32_t *object, uint32_t value)
+{
+    object[0] = value;
+}
+
+void set_word_0(uint32_t *object, uint32_t value)
+{
+    object[0] = value;
+}
+
+void set_word_2c1(uint32_t *object)
+{
+    object[0x2c1] = 0;
+}
+
+void set_word_48_4c(uint32_t *object, uint32_t a, uint32_t b)
+{
+    object[0x48 / 4] = a;
+    object[0x4c / 4] = b;
+}
+
+void clear_word_c_and_call(uint32_t *object)
+{
+    if (object[0xc / 4] != 0) {
+        object[0xc / 4] = 0;
+    }
+}
+
+void set_dat_e(uint32_t value)
+{
+    static uint32_t dat_storage;
+    dat_storage = value;
+    (void)dat_storage;
+}

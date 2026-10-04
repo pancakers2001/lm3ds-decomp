@@ -1031,6 +1031,24 @@ uint32_t get_nested_table_18_word_c(int32_t idx1, int32_t idx2);
 uint8_t get_entry_and_byte(uint32_t *object, int32_t index, uint32_t *entry_out);
 void select_word_by_byte_61(uint32_t *dest, const uint8_t *src);
 void init_triple_dat(uint32_t *object);
+uint32_t set_halfword_6c_to_2_if_70_ge(uint32_t *object, int32_t threshold);
+uint32_t set_halfword_c_to_100_if_f3_neg(uint32_t *object);
+uint32_t set_halfword_c_to_0_if_f3_zero(uint32_t *object);
+uint32_t set_halfword_6c_to_1_if_70_gt(uint32_t *object, int32_t threshold);
+void or_nested_e8_280_set_df(uint32_t *object);
+void or_nested_e8_280_set_de(uint32_t *object);
+void or_nested_e8_280_set_dd(uint32_t *object);
+void or_nested_e8_280_set_dc(uint32_t *object);
+uint8_t return_dat_byte_20d(void);
+void add_scaled_to_14c(float *object);
+int32_t init_word_and_halfword_ffff(uint32_t *object);
+void clear_word_d(uint32_t *object);
+void set_word_34(uint32_t *object, uint32_t value);
+void set_word_0(uint32_t *object, uint32_t value);
+void set_word_2c1(uint32_t *object);
+void set_word_48_4c(uint32_t *object, uint32_t a, uint32_t b);
+void clear_word_c_and_call(uint32_t *object);
+void set_dat_e(uint32_t value);
 uint32_t check_word_4_nonzero(const uint32_t *object);
 uint32_t check_byte_8_is_0_or_7(const uint8_t *object);
 uint32_t check_byte_28_is_0_or_8(const uint8_t *object);
@@ -1080,6 +1098,7 @@ void run_batch_d3_tests(void);
 void run_batch_e1_tests(void);
 void run_batch_e2_tests(void);
 void run_batch_f2_tests(void);
+void run_batch_g2_tests(void);
 
 static uint8_t flag_storage;
 static uint8_t fill_storage[16];
@@ -3147,6 +3166,7 @@ void run_runtime_tests(void)
     run_batch_e1_tests();
     run_batch_e2_tests();
     run_batch_f2_tests();
+    run_batch_g2_tests();
 }
 
 void run_batch_e_tests(void)
@@ -6213,4 +6233,102 @@ void run_batch_f2_tests(void)
     memset(obj, 0xff, 16);
     init_triple_dat(obj);
     assert(obj[0] == 0 && obj[1] == 0 && obj[2] == 0);
+}
+
+void run_batch_g2_tests(void)
+{
+    static uint32_t obj[4096];
+    static uint32_t mid[1024];
+    static uint32_t sub[1024];
+
+    memset(obj, 0, sizeof(obj));
+    obj[0x70 / 4] = 10;
+    assert(set_halfword_6c_to_2_if_70_ge(obj, 5) == 1);
+    assert(*(uint16_t *)((uint8_t *)obj + 0x6c) == 2);
+    memset(obj, 0, sizeof(obj));
+    obj[0x70 / 4] = 3;
+    assert(set_halfword_6c_to_2_if_70_ge(obj, 5) == 1);
+    assert(*(uint16_t *)((uint8_t *)obj + 0x6c) == 0);
+
+    memset(obj, 0, sizeof(obj));
+    memset(mid, 0, sizeof(mid));
+    memset(sub, 0, sizeof(sub));
+    obj[1] = (uint32_t)(uintptr_t)mid;
+    mid[0xb08 / 4] = (uint32_t)(uintptr_t)sub;
+    *(int8_t *)((uint8_t *)sub + 0xf3) = -1;
+    assert(set_halfword_c_to_100_if_f3_neg(obj) == 1);
+    assert(*(uint16_t *)((uint8_t *)obj + 0xc) == 0x100);
+
+    memset(obj, 0, sizeof(obj));
+    memset(mid, 0, sizeof(mid));
+    memset(sub, 0, sizeof(sub));
+    obj[1] = (uint32_t)(uintptr_t)mid;
+    mid[0xb08 / 4] = (uint32_t)(uintptr_t)sub;
+    *(int8_t *)((uint8_t *)sub + 0xf3) = 0;
+    assert(set_halfword_c_to_0_if_f3_zero(obj) == 1);
+    assert(*(uint16_t *)((uint8_t *)obj + 0xc) == 0);
+
+    memset(obj, 0, sizeof(obj));
+    obj[0x70 / 4] = 10;
+    assert(set_halfword_6c_to_1_if_70_gt(obj, 5) == 1);
+    assert(*(uint16_t *)((uint8_t *)obj + 0x6c) == 1);
+    memset(obj, 0, sizeof(obj));
+    obj[0x70 / 4] = 5;
+    assert(set_halfword_6c_to_1_if_70_gt(obj, 5) == 1);
+    assert(*(uint16_t *)((uint8_t *)obj + 0x6c) == 0);
+
+    memset(obj, 0, sizeof(obj));
+    memset(sub, 0, sizeof(sub));
+    obj[0x14 / 4] = (uint32_t)(uintptr_t)sub;
+    or_nested_e8_280_set_df(obj);
+    assert(*(uint16_t *)((uint8_t *)sub + 0xe8) == 0x280);
+
+    memset(sub, 0, sizeof(sub));
+    or_nested_e8_280_set_de(obj);
+    assert(*(uint16_t *)((uint8_t *)sub + 0xe8) == 0x280);
+
+    memset(sub, 0, sizeof(sub));
+    or_nested_e8_280_set_dd(obj);
+    assert(*(uint16_t *)((uint8_t *)sub + 0xe8) == 0x280);
+
+    memset(sub, 0, sizeof(sub));
+    or_nested_e8_280_set_dc(obj);
+    assert(*(uint16_t *)((uint8_t *)sub + 0xe8) == 0x280);
+
+    assert(return_dat_byte_20d() == 0);
+
+    float fobj[0x150 / 4 + 1];
+    memset(fobj, 0, sizeof(fobj));
+    fobj[0x14c / 4] = 1.0f;
+    add_scaled_to_14c(fobj);
+    assert(fobj[0x14c / 4] == 2.0f);
+
+    memset(obj, 0xff, 16);
+    assert(init_word_and_halfword_ffff(obj) == 0);
+    assert(obj[0] == 0);
+    assert(*(uint16_t *)(obj + 1) == 0xffff);
+
+    memset(obj, 0xff, sizeof(obj));
+    clear_word_d(obj);
+    assert(obj[0xd] == 0);
+
+    set_word_34(obj, 0x1234);
+    assert(obj[0] == 0x1234);
+    set_word_0(obj, 0x5678);
+    assert(obj[0] == 0x5678);
+
+    memset(obj, 0xff, sizeof(obj));
+    set_word_2c1(obj);
+    assert(obj[0x2c1] == 0);
+
+    set_word_48_4c(obj, 0xaaaa, 0xbbbb);
+    assert(obj[0x48 / 4] == 0xaaaa);
+    assert(obj[0x4c / 4] == 0xbbbb);
+
+    memset(obj, 0, sizeof(obj));
+    obj[0xc / 4] = 5;
+    clear_word_c_and_call(obj);
+    assert(obj[0xc / 4] == 0);
+
+    set_dat_e(0xdead);
 }
