@@ -2,7 +2,7 @@
 
 **Functions ported:** 901 / 11978 (7.5%)
 
-![Progress](https://progress-bar.dev/8/?scale=100&title=&width=600&color=green)
+![Progress](https://img.shields.io/badge/functions%20ported-901%2F11978%20(7.5%25)-green)
 
 Work-in-progress decompilation of *Luigi's Mansion* (Nintendo 3DS, 2018, Grezzo).
 
