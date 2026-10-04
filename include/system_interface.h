@@ -1043,4 +1043,5 @@ uint32_t copy_byte_1_halfword_2(uint8_t *object);
 uint32_t copy_triple_from_pointed(uint8_t *object);
 void clear_pointed_pair_26c(uint32_t *object);
 void clear_word_4_only(uint32_t *object);
+void set_byte_ea_recursive(uint32_t *object, uint8_t value, uint32_t recurse);
 #endif

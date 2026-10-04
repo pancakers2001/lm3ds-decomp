@@ -899,3 +899,5 @@ copy_byte_1_halfword_2 = 0x001F1338;
 copy_triple_from_pointed = 0x001F4E0C;
 clear_pointed_pair_26c = 0x001F3E6C;
 clear_word_4_only = 0x001F50C8;
+reset_counters_30_helper = 0x0024AD58;
+set_byte_ea_recursive = 0x002AE858;

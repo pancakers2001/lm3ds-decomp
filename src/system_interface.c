@@ -7055,3 +7055,18 @@ void clear_word_4_only(uint32_t *object)
 {
     object[1] = 0;
 }
+
+void set_byte_ea_recursive(uint32_t *object, uint8_t value, uint32_t recurse)
+{
+    *(uint8_t *)(uintptr_t)((uint8_t *)object + 0xea) = value;
+    if (recurse == 0) {
+        return;
+    }
+    uint32_t i = 0;
+    if (object[6] != 0) {
+        do {
+            set_byte_ea_recursive((uint32_t *)(uintptr_t)(*(const uint32_t *)(uintptr_t)(object[8] + i * 4)), value, recurse);
+            i = i + 1;
+        } while (i < object[6]);
+    }
+}

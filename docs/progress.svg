@@ -3,5 +3,5 @@
   <rect x="0" y="0" width="600" height="40" rx="4" fill="#30363d"/>
   <rect x="0" y="0" width="45" height="40" rx="4" fill="#2ea043"/>
   <rect x="41" y="0" width="4" height="40" fill="#30363d"/>
-  <text x="300" y="26" font-family="Verdana,DejaVu Sans,sans-serif" font-size="16" fill="#e6edf3" text-anchor="middle">901 / 11978 functions ported (7.5%)</text>
+  <text x="300" y="26" font-family="Verdana,DejaVu Sans,sans-serif" font-size="16" fill="#e6edf3" text-anchor="middle">903 / 11979 functions ported (7.5%)</text>
 </svg>

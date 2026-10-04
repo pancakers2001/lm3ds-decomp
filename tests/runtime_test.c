@@ -849,6 +849,7 @@ uint32_t copy_byte_1_halfword_2(uint8_t *object);
 uint32_t copy_triple_from_pointed(uint8_t *object);
 void clear_pointed_pair_26c(uint32_t *object);
 void clear_word_4_only(uint32_t *object);
+void set_byte_ea_recursive(uint32_t *object, uint8_t value, uint32_t recurse);
 uint32_t check_word_4_nonzero(const uint32_t *object);
 uint32_t check_byte_8_is_0_or_7(const uint8_t *object);
 uint32_t check_byte_28_is_0_or_8(const uint8_t *object);
@@ -5299,4 +5300,16 @@ void run_batch_b2_tests(void)
     cw4o_obj[1] = 9;
     clear_word_4_only(cw4o_obj);
     assert(cw4o_obj[1] == 0);
+
+    static uint32_t sbe_obj[0xec / 4];
+    static uint32_t sbe_child[0xec / 4];
+    static uint32_t sbe_list[1];
+    set_byte_ea_recursive(sbe_obj, 0x42, 0);
+    assert(((uint8_t *)sbe_obj)[0xea] == 0x42);
+    sbe_list[0] = (uint32_t)(uintptr_t)sbe_child;
+    sbe_obj[6] = 1;
+    sbe_obj[8] = (uint32_t)(uintptr_t)sbe_list;
+    set_byte_ea_recursive(sbe_obj, 0x55, 1);
+    assert(((uint8_t *)sbe_obj)[0xea] == 0x55);
+    assert(((uint8_t *)sbe_child)[0xea] == 0x55);
 }
