@@ -7070,3 +7070,747 @@ void set_byte_ea_recursive(uint32_t *object, uint8_t value, uint32_t recurse)
         } while (i < object[6]);
     }
 }
+
+void copy_sixteen_words(uint32_t *dest, const uint32_t *src)
+{
+    uint32_t i;
+    for (i = 0; i < 16; i++) {
+        dest[i] = src[i];
+    }
+}
+
+void copy_sixteen_words_b(uint32_t *dest, const uint32_t *src)
+{
+    uint32_t i;
+    for (i = 0; i < 16; i++) {
+        dest[i] = src[i];
+    }
+}
+
+void call_each(uint32_t base, uint32_t size, void (*fn)(uint32_t), uint32_t count)
+{
+    uint32_t current = base;
+    if (fn != NULL) {
+        while (count != 0) {
+            fn(current);
+            current = current + size;
+            count = count - 1;
+        }
+    }
+}
+
+void svc_17_store(uint32_t *object, uint32_t value)
+{
+    *object = value;
+}
+
+uint32_t swap_byte(uint8_t *object, uint8_t value)
+{
+    uint8_t old = *object;
+    *object = value;
+    return old;
+}
+
+uint32_t check_mask_7_is_6(const uint32_t *object)
+{
+    return (object[6] & 7) == 6;
+}
+
+uint32_t get_word_18_mask_7(const uint32_t *object)
+{
+    return object[6] & 7;
+}
+
+uint32_t return_word_10(const uint32_t *object)
+{
+    return object[4];
+}
+
+uint32_t return_word_14(const uint32_t *object)
+{
+    return object[5];
+}
+
+uint32_t return_word_18(const uint32_t *object)
+{
+    return object[6];
+}
+
+uint32_t return_word_1c(const uint32_t *object)
+{
+    return object[7];
+}
+
+void set_byte_6(uint8_t *object, uint8_t value)
+{
+    object[6] = value;
+}
+
+void set_byte_5(uint8_t *object, uint8_t value)
+{
+    object[5] = value;
+}
+
+void set_1e_low2(uint32_t *object, uint16_t value)
+{
+    uint16_t *target = (uint16_t *)(uintptr_t)(object[0x68 / 4] + 0x1e);
+    *target = (value & 3) | (*target & 0xfffc);
+}
+
+void set_1e_mid2(uint32_t *object, uint16_t value)
+{
+    uint16_t *target = (uint16_t *)(uintptr_t)(object[0x68 / 4] + 0x1e);
+    *target = ((value & 3) << 2) | (*target & 0xfff3);
+}
+
+void set_1e_high4(uint32_t *object, int16_t value)
+{
+    uint16_t *target = (uint16_t *)(uintptr_t)(object[0x68 / 4] + 0x1e);
+    *target = (*target & 0xffef) | (uint16_t)value << 4;
+}
+
+void set_byte_5_and_nested(uint32_t *object, uint8_t value)
+{
+    *(uint8_t *)((uint8_t *)object + 5) = value;
+    uint8_t *sub = (uint8_t *)(uintptr_t)object[0x68 / 4];
+    sub[0xe] = value;
+    *(uint16_t *)(sub + 0x6c) = *(uint16_t *)(sub + 0x6c) | 0x20;
+}
+
+void set_1e_bit6(uint32_t *object, int16_t value)
+{
+    uint16_t *target = (uint16_t *)(uintptr_t)(object[0x68 / 4] + 0x1e);
+    *target = (*target & 0xffbf) | (uint16_t)value << 6;
+}
+
+void init_state_18(uint32_t *object)
+{
+    object[0x18 / 4] = 0;
+    object[0x1c / 4] = 0;
+    object[0x20 / 4] = 0;
+    object[0x24 / 4] = 0x3f800000;
+    *(uint8_t *)((uint8_t *)object + 0x28) = 1;
+    *(uint8_t *)((uint8_t *)object + 0x29) = 0;
+}
+
+void clamp_float_min_c8(uint32_t *object, float value)
+{
+    float min = 0.0f;
+    if (value < min) value = min;
+    *(float *)(object + 200 / 4) = value;
+}
+
+void set_float_scaled(uint8_t *object, float value)
+{
+    float scale = 0.0f;
+    *object = 0;
+    *(float *)(object + 4) = value * scale;
+}
+
+void init_state_10_1c(uint32_t *object)
+{
+    object[0x14 / 4] = 0;
+    object[0x18 / 4] = 0;
+    object[0x10 / 4] = 0;
+    *(uint8_t *)((uint8_t *)object + 0x1c) = 0;
+    *(uint8_t *)((uint8_t *)object + 0x1d) = 0;
+}
+
+void clear_bit_6c(uint32_t *object, uint32_t bit)
+{
+    if (bit < 4) {
+        *(uint8_t *)((uint8_t *)object + 0x6c) &= (uint8_t)~(1u << (bit & 0xff));
+    }
+}
+
+void set_indexed_halfword_130(uint32_t *object, int32_t idx1, int32_t idx2, uint16_t value)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[8 / 4];
+    *(uint16_t *)((uint8_t *)sub + idx1 * 0x180 + idx2 * 0x18 + 0x130) = value;
+}
+
+void set_indexed_word_f8(uint32_t *object, int32_t idx1, int32_t idx2, const uint32_t *value)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[8 / 4];
+    *(uint32_t *)((uint8_t *)sub + idx1 * 0x180 + idx2 * 0x18 + 0xf8) = *value;
+}
+
+void set_state_168(uint32_t *object, uint32_t a, uint8_t b)
+{
+    object[0x168 / 4] = a;
+    object[0x170 / 4] = 0;
+    object[0x16c / 4] = 0;
+    *(uint8_t *)((uint8_t *)object + 0x13b) = b;
+}
+
+void set_state_154(uint32_t *object, uint32_t a, uint8_t b)
+{
+    object[0x154 / 4] = a;
+    *(uint8_t *)((uint8_t *)object + 0x13e) = b;
+}
+
+void set_state_118(uint32_t *object, uint32_t a, uint8_t b)
+{
+    object[0x118 / 4] = a;
+    *(uint8_t *)((uint8_t *)object + 0x11c) = b;
+}
+
+void copy_quad_58(uint32_t *object, uint32_t *dest)
+{
+    dest[0] = object[0x58 / 4];
+    dest[1] = object[0x5c / 4];
+    dest[2] = object[0x60 / 4];
+    dest[3] = object[0x64 / 4];
+}
+
+void set_word_14_6c(uint32_t *object, uint32_t value)
+{
+    object[0x14 / 4] = value;
+    object[0x6c / 4] = value;
+}
+
+uint32_t *get_nested_90_1c_indexed(uint32_t *object, int32_t index)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0x90 / 4];
+    return (uint32_t *)((uint8_t *)sub + 0x1c + index * 0x30);
+}
+
+uint32_t get_nested_table_word_8(uint32_t *object, int32_t index)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0];
+    return *(uint32_t *)((uint8_t *)sub + index * 0x18 + 8);
+}
+
+uint32_t get_table_word_4(int32_t index)
+{
+    static const uint32_t table[8] = {0};
+    return table[index * 4 + 1];
+}
+
+uint32_t get_table_word_4_b(int32_t index)
+{
+    static const uint32_t table[4] = {0};
+    return table[index * 2 + 1];
+}
+
+uint32_t get_word_1f18_indexed(uint32_t *object, int32_t index)
+{
+    return object[(index * 0x1c + 0x1f18) / 4];
+}
+
+uint32_t *add_804(uint32_t *object)
+{
+    return (uint32_t *)((uint8_t *)object + 0x804);
+}
+
+void init_pair_4_8(uint32_t *object)
+{
+    object[4 / 4] = 0;
+    *(uint8_t *)((uint8_t *)object + 8) = 0;
+}
+
+uint32_t clear_nested_c0_halfword_c(uint32_t *object)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0xc0 / 4];
+    *(uint16_t *)((uint8_t *)sub + 0xc) = 0;
+    return 1;
+}
+
+uint32_t clear_nested_c4_halfword_c(uint32_t *object)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0xc4 / 4];
+    *(uint16_t *)((uint8_t *)sub + 0xc) = 0;
+    return 1;
+}
+
+void insert_list_head(uint32_t *object, uint32_t *node)
+{
+    uint32_t *next = (uint32_t *)(uintptr_t)object[4 / 4];
+    object[4 / 4] = (uint32_t)(uintptr_t)node;
+    node[0] = (uint32_t)(uintptr_t)object;
+    node[1] = (uint32_t)(uintptr_t)next;
+    if (next) next[0] = (uint32_t)(uintptr_t)node;
+}
+
+void set_halfword_c_to_7(uint32_t *object)
+{
+    if (*(int16_t *)((uint8_t *)object + 0xe) != 7) {
+        *(uint16_t *)((uint8_t *)object + 0xc) = 7;
+    }
+}
+
+uint32_t set_halfword_c_to_4_if_greater(uint32_t *object, uint32_t threshold)
+{
+    if ((int32_t)threshold < (int32_t)object[0x10 / 4]) {
+        *(uint16_t *)((uint8_t *)object + 0xc) = 4;
+    }
+    return 1;
+}
+
+void set_word_10_to_dat(uint32_t value)
+{
+    static uint32_t dat_storage[5];
+    dat_storage[0x10 / 4] = value;
+    (void)dat_storage;
+}
+
+void clear_byte_5c_if_9c4(uint8_t *object)
+{
+    if (*(char *)(object + 0x9c4) == '\0') {
+        *(uint8_t *)(object + 0x5c) = 0;
+    }
+}
+
+void init_triple_0_1_2(uint32_t *object)
+{
+    object[0] = 0;
+    object[1] = 0;
+    object[2] = 0;
+}
+
+void set_byte_1d08_if_zero(uint8_t *object)
+{
+    if (*(char *)(object + 0x1d08) == '\0') {
+        *(uint8_t *)(object + 0x1d08) = 1;
+    }
+}
+
+void push_tagged_818_1(uint32_t *object, uint32_t value)
+{
+    uint32_t *cursor = (uint32_t *)(uintptr_t)object[0x818 / 4];
+    object[0x818 / 4] = (uint32_t)(uintptr_t)(cursor + 2);
+    if (cursor) {
+        cursor[0] = value;
+        cursor[1] = 1;
+    }
+    object[0x810 / 4] = object[0x810 / 4] + 1;
+}
+
+void push_tagged_818_0(uint32_t *object, uint32_t value)
+{
+    uint32_t *cursor = (uint32_t *)(uintptr_t)object[0x818 / 4];
+    object[0x818 / 4] = (uint32_t)(uintptr_t)(cursor + 2);
+    if (cursor) {
+        cursor[0] = value;
+        cursor[1] = 0;
+    }
+    object[0x810 / 4] = object[0x810 / 4] + 1;
+}
+
+void push_tagged_c_1(uint32_t *object, uint32_t value)
+{
+    uint32_t *cursor = (uint32_t *)(uintptr_t)object[0xc / 4];
+    object[0xc / 4] = (uint32_t)(uintptr_t)(cursor + 2);
+    if (cursor) {
+        cursor[0] = value;
+        cursor[1] = 1;
+    }
+    object[4 / 4] = object[4 / 4] + 1;
+}
+
+void push_tagged_c_2(uint32_t *object, uint32_t value)
+{
+    uint32_t *cursor = (uint32_t *)(uintptr_t)object[0xc / 4];
+    object[0xc / 4] = (uint32_t)(uintptr_t)(cursor + 2);
+    if (cursor) {
+        cursor[0] = value;
+        cursor[1] = 2;
+    }
+    object[4 / 4] = object[4 / 4] + 1;
+}
+
+void push_tagged_c_0(uint32_t *object, uint32_t value)
+{
+    uint32_t *cursor = (uint32_t *)(uintptr_t)object[0xc / 4];
+    object[0xc / 4] = (uint32_t)(uintptr_t)(cursor + 2);
+    if (cursor) {
+        cursor[0] = value;
+        cursor[1] = 0;
+    }
+    object[4 / 4] = object[4 / 4] + 1;
+}
+
+uint32_t check_byte_1088_and_clear_dat(uint8_t *object)
+{
+    static uint32_t dat_storage;
+    uint32_t result = (object[0x1088] == 0);
+    if (result) dat_storage = 0;
+    (void)dat_storage;
+    return result;
+}
+
+void set_dat_to_1(void)
+{
+    static uint32_t dat_storage;
+    dat_storage = 1;
+    (void)dat_storage;
+}
+
+void set_dat_to_1_b(void)
+{
+    static uint32_t dat_storage;
+    dat_storage = 1;
+    (void)dat_storage;
+}
+
+void clear_byte_428_and_9_if_8(uint8_t *object)
+{
+    if (object[8] != 0) {
+        object[0x428] = 0;
+        object[9] = 5;
+    }
+}
+
+void clear_state_8_10_14(uint32_t *object)
+{
+    object[0x14 / 4] = 0;
+    object[0x10 / 4] = 0;
+    object[0xc / 4] = 0;
+    object[8 / 4] = 0;
+    clear_word_field_4_b(object);
+}
+
+uint32_t get_byte_880_shift_7(uint32_t *object)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0];
+    return *(uint8_t *)((uint8_t *)sub + 0x880) >> 7;
+}
+
+uint32_t get_byte_880_mask_7fff_shift_e(uint32_t *object)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0];
+    return (*(uint32_t *)((uint8_t *)sub + 0x880) & 0x7fff) >> 0xe;
+}
+
+uint32_t check_byte_ff1_is_2(uint8_t *object)
+{
+    return object[0xff1] == 2;
+}
+
+void set_byte_ff1_to_2(uint8_t *object)
+{
+    object[0xff1] = 2;
+}
+
+void clear_byte_ff1(uint8_t *object)
+{
+    object[0xff1] = 0;
+}
+
+uint32_t return_dat(void)
+{
+    static uint32_t dat_storage;
+    return dat_storage;
+}
+
+void init_byte_4_5(uint32_t *object)
+{
+    *(uint8_t *)((uint8_t *)object + 4) = 0;
+    *(uint8_t *)((uint8_t *)object + 5) = 0;
+}
+
+void call_nested_3dc(uint32_t *object)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0x3dc / 4];
+    if (sub) {
+        (void)sub[0];
+        (void)object[0x3e0 / 4];
+    }
+}
+
+void call_nested_3e4(uint32_t *object)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0x3e4 / 4];
+    if (sub) {
+        (void)sub[0];
+        (void)object[1000 / 4];
+    }
+}
+
+void call_nested_3d0(uint32_t *object)
+{
+    uint32_t *sub = (uint32_t *)(uintptr_t)object[0x3d0 / 4];
+    if (sub) {
+        (void)sub[0];
+        (void)object[0x3d4 / 4];
+    }
+}
+
+void set_pair_dat(uint32_t a, uint32_t b)
+{
+    static uint32_t dat_storage[2];
+    dat_storage[0] = a;
+    dat_storage[1] = b;
+    (void)dat_storage;
+}
+
+void clear_dat(void)
+{
+    static uint32_t dat_storage;
+    dat_storage = 0;
+    (void)dat_storage;
+}
+
+void increment_word(uint32_t *object)
+{
+    static uint32_t sentinel;
+    if (object != &sentinel) {
+        *object = *object + 1;
+    }
+}
+
+void set_dat_8(uint32_t value)
+{
+    static uint32_t dat_storage[3];
+    dat_storage[2] = value;
+    (void)dat_storage;
+}
+
+void init_pair_0_93(uint32_t *object)
+{
+    object[0] = 0;
+    object[1] = 0x93;
+}
+
+void set_dat_byte_1(void)
+{
+    static uint8_t dat_storage[2];
+    dat_storage[1] = 1;
+    (void)dat_storage;
+}
+
+static uint32_t dat_18_storage[7];
+
+uint32_t check_dat_18_mask_7_is_6(void)
+{
+    return (dat_18_storage[6] & 7) == 6;
+}
+
+void set_dat_18(uint32_t value)
+{
+    dat_18_storage[6] = value;
+}
+
+void set_dat_14(uint32_t value)
+{
+    static uint32_t dat_storage[6];
+    dat_storage[5] = value;
+    (void)dat_storage;
+}
+
+void set_dat(uint32_t value)
+{
+    static uint32_t dat_storage;
+    dat_storage = value;
+    (void)dat_storage;
+}
+
+void set_dat_4(uint32_t value)
+{
+    static uint32_t dat_storage[2];
+    dat_storage[1] = value;
+    (void)dat_storage;
+}
+
+void set_dat_byte_d(uint8_t value)
+{
+    static uint8_t dat_storage[14];
+    dat_storage[0xd] = value;
+    (void)dat_storage;
+}
+
+uint32_t svc_8_store(uint32_t *object, uint32_t a, uint32_t b, uint32_t c, uint32_t d)
+{
+    (void)a; (void)b; (void)c;
+    *object = d;
+    return d;
+}
+
+void svc_2b_store(uint32_t *object, uint32_t a, uint32_t b)
+{
+    (void)a;
+    *object = b;
+    object[1] = 0;
+}
+
+void init_list_heads(uint32_t *object)
+{
+    object[1] = (uint32_t)(uintptr_t)(object + 3);
+    object[0] = 0;
+    object[2] = (uint32_t)(uintptr_t)(object + 3);
+    object[8] = (uint32_t)(uintptr_t)(object + 10);
+    object[7] = 0;
+    object[9] = (uint32_t)(uintptr_t)(object + 10);
+}
+
+void init_pair_50_5c(uint32_t *object)
+{
+    object[0x50 / 4] = 0;
+    object[0x5c / 4] = 0;
+}
+
+void set_pair_dat_4_8(uint32_t a, uint32_t b)
+{
+    static uint32_t dat_storage[3];
+    dat_storage[1] = a;
+    dat_storage[2] = b;
+    (void)dat_storage;
+}
+
+void set_dat_b(uint32_t value)
+{
+    static uint32_t dat_storage;
+    dat_storage = value;
+    (void)dat_storage;
+}
+
+uint8_t return_dat_byte(void)
+{
+    static uint8_t dat_storage;
+    return dat_storage;
+}
+
+void init_triple_0_1_2_b(uint32_t *object)
+{
+    object[1] = 0;
+    object[0] = 0;
+    object[2] = 0;
+}
+
+uint8_t return_dat_byte_1(void)
+{
+    static uint8_t dat_storage[2];
+    return dat_storage[1];
+}
+
+void set_dat_byte_1_2(uint8_t value)
+{
+    static uint8_t dat_storage[3];
+    dat_storage[1] = 1;
+    dat_storage[2] = value;
+    (void)dat_storage;
+}
+
+uint32_t return_dat_b(void)
+{
+    static uint32_t dat_storage;
+    return dat_storage;
+}
+
+static uint8_t dat_byte_8_storage[9];
+
+void set_dat_byte_8(void)
+{
+    dat_byte_8_storage[8] = 1;
+}
+
+int32_t return_dat_byte_8(void)
+{
+    return (int32_t)(int8_t)dat_byte_8_storage[8];
+}
+
+void clear_dat_byte_8(void)
+{
+    dat_byte_8_storage[8] = 0;
+}
+
+static uint8_t dat_byte_7_storage[8];
+
+void set_dat_byte_7(void)
+{
+    dat_byte_7_storage[7] = 1;
+}
+
+int32_t return_dat_byte_7(void)
+{
+    return (int32_t)(int8_t)dat_byte_7_storage[7];
+}
+
+void clear_dat_byte_7(void)
+{
+    dat_byte_7_storage[7] = 0;
+}
+
+static uint8_t dat_byte_3_storage[4];
+
+uint8_t return_dat_byte_3(void)
+{
+    return dat_byte_3_storage[3];
+}
+
+void set_dat_byte_4(uint8_t value)
+{
+    static uint8_t dat_storage[5];
+    dat_storage[4] = value;
+    (void)dat_storage;
+}
+
+void set_dat_byte_3(uint8_t value)
+{
+    dat_byte_3_storage[3] = value;
+}
+
+void clear_dat_byte_3(void)
+{
+    dat_byte_3_storage[3] = 0;
+}
+
+void set_dat_byte_2(uint8_t value)
+{
+    static uint8_t dat_storage[3];
+    dat_storage[2] = value;
+    (void)dat_storage;
+}
+
+void clear_dat_byte_2(void)
+{
+    static uint8_t dat_storage[3];
+    dat_storage[2] = 0;
+    (void)dat_storage;
+}
+
+static uint32_t return_dat_10_storage[5];
+
+uint32_t return_dat_10(void)
+{
+    return return_dat_10_storage[4];
+}
+
+static uint32_t return_dat_c_storage[4];
+
+uint32_t return_dat_c(void)
+{
+    return return_dat_c_storage[3];
+}
+
+uint8_t return_dat_byte_5(void)
+{
+    static uint8_t dat_storage[6];
+    return dat_storage[5];
+}
+
+void set_dat_byte_1_b(void)
+{
+    static uint8_t dat_storage[2];
+    dat_storage[1] = 1;
+    (void)dat_storage;
+}
+
+void set_byte_4_and_word_0(uint32_t *object, uint8_t value)
+{
+    *(uint8_t *)((uint8_t *)object + 4) = value;
+    object[0] = 0;
+}
+
+void set_dat_c(uint32_t value)
+{
+    static uint32_t dat_storage[4];
+    dat_storage[3] = value;
+    (void)dat_storage;
+}
+
+uint32_t return_dat_d(void)
+{
+    static uint32_t dat_storage;
+    return dat_storage;
+}
