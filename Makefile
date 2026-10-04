@@ -6,7 +6,7 @@ GHIDRA_PROJECT_NAME ?= LM3DS
 GHIDRA_FUNCTIONS ?= 0x00100024
 GHIDRA_EXPORT_DIR := $(abspath build/ghidra/exports)
 
-.PHONY: setup extract info disasm analyze progress test-decomp test-decomp-sanitize test-game clean
+.PHONY: setup extract info disasm analyze progress lint test-decomp test-decomp-sanitize test-game clean
 
 setup:
 	$(PYTHON) -m venv .venv && .venv/bin/pip install -r requirements.txt
@@ -31,6 +31,9 @@ analyze:
 
 progress:
 	$(PYTHON) tools/progress.py
+
+lint:
+	$(PYTHON) tools/lint_symbols.py
 
 test-decomp:
 	@mkdir -p build

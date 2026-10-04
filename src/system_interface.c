@@ -2692,20 +2692,6 @@ void store_pair_10_14(uint32_t *object, const uint32_t *value)
     object[0x14 / 4] = value[1];
 }
 
-void clear_byte_and_words(uint8_t *object)
-{
-    object[0] = 0;
-    *(uint32_t *)(object + 1) = 0;
-    *(uint32_t *)(object + 5) = 0;
-    *(uint32_t *)(object + 9) = 0;
-    *(uint32_t *)(object + 0xd) = 0;
-}
-
-void clear_byte_field_4(uint8_t *object)
-{
-    object[4] = 0;
-}
-
 uint32_t get_indexed_halfword_address(uint32_t object, uint32_t index)
 {
     if (index < 0x10) {
@@ -3055,10 +3041,6 @@ uint32_t get_nested_table_word(const uint32_t *object)
     return *(const uint32_t *)(uintptr_t)(table[0] + table[0x30 / 4] + 8);
 }
 
-void noop_t(void)
-{
-}
-
 uint32_t allocate_from_arena(uint32_t *object, uint32_t size)
 {
     uint32_t used = object[0x5d0 / 4];
@@ -3181,13 +3163,6 @@ void add_to_word_184(uint32_t *object, uint32_t value)
 void set_byte_1ac6_ff(uint8_t *object)
 {
     object[0x1ac6] = 0xff;
-}
-
-void clear_word_pair_and_halfword(uint32_t *object)
-{
-    object[0] = 0;
-    object[1] = 0;
-    *(uint16_t *)(object + 2) = 0;
 }
 
 void store_quad_58(uint32_t *object, const uint32_t *value)
@@ -3542,10 +3517,6 @@ uint32_t get_byte_5_if_state_1(const uint8_t *object)
     return 0;
 }
 
-void noop_ae(void)
-{
-}
-
 void noop_af(void)
 {
 }
@@ -3555,10 +3526,6 @@ void noop_ba(void)
 }
 
 void noop_bb(void)
-{
-}
-
-void noop_bc(void)
 {
 }
 
@@ -3591,22 +3558,6 @@ void noop_bf(void)
 
 void noop_c0(void)
 {
-}
-
-uint32_t get_indexed_field_10c_b(uint32_t *object, uint32_t index)
-{
-    return object[0x10c / 4] + index * 0x1c;
-}
-
-uint32_t get_low_bit_3c_b(const uint8_t *object)
-{
-    return object[0x3c] & 1;
-}
-
-uint32_t get_nested_word_8(const uint32_t *object)
-{
-    const uint32_t *mid = (const uint32_t *)(uintptr_t)object[1];
-    return *(const uint32_t *)(uintptr_t)(mid[0] + mid[0x30 / 4] + 8);
 }
 
 void noop_c1(void)
@@ -3748,14 +3699,6 @@ void set_self_link_2(uint32_t *object)
     object[3] = (uint32_t)(uintptr_t)(object + 2);
 }
 
-void noop_c7(void)
-{
-}
-
-void noop_c8(void)
-{
-}
-
 void initialize_link_record_full(uint32_t *record)
 {
     record[0] = 0;
@@ -3828,26 +3771,9 @@ uint32_t get_state_4e_mapped(const uint8_t *object)
     return 0;
 }
 
-void noop_c9(void)
-{
-}
-
-void noop_ca(void)
-{
-}
-
 void clear_byte_5c(uint8_t *object)
 {
     object[0x5c] = 0;
-}
-
-void clear_word_0_and_byte_3_4(uint32_t *object)
-{
-    object[1] = 0;
-    object[0] = 0x10000;
-    object[2] = 0;
-    ((uint8_t *)object)[0xc] = 0;
-    ((uint8_t *)object)[0xd] = 0;
 }
 
 void clear_word_0_and_byte_10_11(uint32_t *object)
@@ -3865,13 +3791,6 @@ void clear_word_0_1_and_halfword_2(uint32_t *object)
     object[0] = 0;
     object[1] = 0;
     *(uint16_t *)(object + 2) = 0;
-}
-
-void set_byte_14_if_0x102(uint8_t *object)
-{
-    if (*(int16_t *)(object + 0x1c) == 0x102) {
-        object[0x290] = 1;
-    }
 }
 
 void clear_byte_5c_and_call_clear(uint8_t *object)
@@ -3920,12 +3839,6 @@ void set_byte_290_if_0x102(uint8_t *object)
     if (*(int16_t *)(object + 0x1c) == 0x102) {
         object[0x290] = 1;
     }
-}
-
-void clear_word_14_and_set_c(uint32_t *object, uint32_t value)
-{
-    object[0x14 / 4] = 0;
-    object[0xc / 4] = value;
 }
 
 void clear_state_record_970c(uint32_t *record)
@@ -5481,14 +5394,6 @@ uint32_t check_pointed_word_68(const uint32_t *object)
     return 0;
 }
 
-uint32_t get_pointed_byte_4_zero(const uint32_t *object)
-{
-    if (object[0] == 0) {
-        return 1;
-    }
-    return *(const uint8_t *)(uintptr_t)(object[0] + 4) == 0;
-}
-
 void clear_byte_end(uint32_t *object)
 {
     *(uint8_t *)(uintptr_t)(object[2] + object[1] - 1) = 0;
@@ -6043,14 +5948,6 @@ uint32_t set_state_2_if_flag_b(uint8_t *object)
 {
     if ((*(const uint8_t *)(uintptr_t)(*(const uint32_t *)(object + 4) + 0xbd8) & 1) != 0) {
         *(uint16_t *)(object + 0xc) = 2;
-    }
-    return 1;
-}
-
-uint32_t set_state_8_if_halfword_96_zero(uint8_t *object)
-{
-    if (*(const int16_t *)(uintptr_t)(*(const uint32_t *)(uintptr_t)(*(const uint32_t *)(object + 4) + 0xb08) + 0x96) == 0) {
-        *(uint16_t *)(object + 0xc) = 8;
     }
     return 1;
 }

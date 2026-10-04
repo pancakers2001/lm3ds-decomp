@@ -247,8 +247,6 @@ uint32_t get_halfword_38_masked(const uint32_t *object);
 uint16_t byte_swap_halfword(uint16_t value);
 void copy_field_8_to_4(uint32_t *object);
 void store_pair_10_14(uint32_t *object, const uint32_t *value);
-void clear_byte_and_words(uint8_t *object);
-void clear_byte_field_4(uint8_t *object);
 uint32_t get_indexed_halfword_address(uint32_t object, uint32_t index);
 int has_flag_and_subobject(const uint32_t *object);
 void noop_l(void);
@@ -321,7 +319,6 @@ uint32_t get_indexed_record_a0(const uint32_t *object, uint32_t index);
 void noop_s(void);
 void add_to_word_184(uint32_t *object, uint32_t value);
 void set_byte_1ac6_ff(uint8_t *object);
-void clear_word_pair_and_halfword(uint32_t *object);
 void store_quad_58(uint32_t *object, const uint32_t *value);
 uint32_t check_pair_480_481(const uint8_t *object);
 uint32_t check_idle_1fd_201(const uint8_t *object);
@@ -384,7 +381,6 @@ void set_byte_24cd_if_set(uint8_t *object);
 void clear_byte_4_and_mask_e4(uint8_t *object);
 void clear_record_3b303c(uint32_t *record);
 uint32_t get_byte_5_if_state_1(const uint8_t *object);
-void noop_ae(void);
 void noop_af(void);
 uint32_t get_constant_10(void);
 uint32_t get_constant_4(void);
@@ -393,9 +389,6 @@ void noop_bd(void);
 void noop_be(void);
 void noop_bf(void);
 void noop_c0(void);
-uint32_t get_indexed_field_10c_b(uint32_t *object, uint32_t index);
-uint32_t get_low_bit_3c_b(const uint8_t *object);
-uint32_t get_nested_word_8(const uint32_t *object);
 void noop_c1(void);
 uint32_t add_field_3c(uint32_t *object);
 uint32_t add_field_2c(uint32_t *object);
@@ -419,26 +412,19 @@ uint32_t copy_record_if_different(uint32_t *dest, const uint32_t *src);
 int is_not_type_8579(uint32_t value);
 void initialize_state_record(uint32_t *record);
 void set_self_link_2(uint32_t *object);
-void noop_c7(void);
-void noop_c8(void);
 void initialize_link_record_full(uint32_t *record);
 void initialize_tagged_record(uint32_t *record, uint32_t tag);
 void initialize_tagged_record_b(uint32_t *record, uint32_t tag);
 void set_pair_1cc_1cd_if_different(uint8_t *object, uint8_t a, uint8_t b);
 uint32_t get_state_1a_mapped(const uint8_t *object);
 uint32_t get_state_4e_mapped(const uint8_t *object);
-void noop_c9(void);
-void noop_ca(void);
 void clear_byte_5c(uint8_t *object);
-void clear_word_0_and_byte_3_4(uint32_t *object);
 void clear_word_0_and_byte_10_11(uint32_t *object);
 void clear_word_0_1_and_halfword_2(uint32_t *object);
-void set_byte_14_if_0x102(uint8_t *object);
 void push_tagged_818(uint32_t *object, uint32_t value);
 void push_tagged_c(uint32_t *object, uint32_t value);
 void set_byte_290_if_0x102(uint8_t *object);
 void noop_cb(void);
-void clear_word_14_and_set_c(uint32_t *object, uint32_t value);
 void clear_state_record_970c(uint32_t *record);
 void initialize_state_record_788c(uint32_t *record);
 void set_byte_4_or_bit(uint8_t *object, uint32_t bit);
@@ -458,12 +444,10 @@ void set_byte_24cd_if_set(uint8_t *object);
 void clear_byte_4_and_mask_e4(uint8_t *object);
 void clear_record_3b303c(uint32_t *record);
 uint32_t get_byte_5_if_state_1(const uint8_t *object);
-void noop_ae(void);
 void noop_af(void);
 uint32_t get_indexed_field_10c(uint32_t *object, uint32_t index);
 uint32_t get_low_bit_3c(const uint8_t *object);
 uint32_t get_nested_table_word(const uint32_t *object);
-void noop_t(void);
 uint32_t allocate_from_arena(uint32_t *object, uint32_t size);
 void set_pair_bc8(uint32_t *object, uint32_t a, uint32_t b);
 void copy_pair_with_halfword(uint32_t *dest, const uint32_t *src);
@@ -661,7 +645,6 @@ void store_8_180_18_130(uint32_t *out, uint32_t *object, uint32_t a, uint32_t b)
 uint32_t get_nested_8_180_17c(uint32_t *object, uint32_t a, uint32_t b);
 uint32_t copy_4c_from_pointed(uint8_t *dest, const uint32_t *object);
 uint32_t check_pointed_word_68(const uint32_t *object);
-uint32_t get_pointed_byte_4_zero(const uint32_t *object);
 void clear_byte_end(uint32_t *object);
 int32_t get_byte_15bc(const uint8_t *object);
 int32_t get_byte_15b8_indexed(const uint8_t *object, uint32_t index);
@@ -731,7 +714,6 @@ void store_pair_594_1720(uint32_t *object, uint32_t a, uint32_t b);
 uint32_t set_state_2_if_flag(uint8_t *object);
 uint32_t set_state_10_if_flag(uint8_t *object);
 uint32_t set_state_2_if_flag_b(uint8_t *object);
-uint32_t set_state_8_if_halfword_96_zero(uint8_t *object);
 void or_byte_3eff_set_3f05_4(uint8_t *object);
 void and_byte_3eff_set_3f05_2(uint8_t *object);
 void or_byte_3eff_2_set_3f05_4(uint8_t *object);
@@ -2444,18 +2426,6 @@ void run_runtime_tests(void)
     store_pair_10_14(sp1014_obj, sp1014_val);
     assert(sp1014_obj[0x10 / 4] == 0x11 && sp1014_obj[0x14 / 4] == 0x22);
 
-    static uint8_t cbw_obj[0x11];
-    cbw_obj[0] = 1;
-    *(uint32_t *)(cbw_obj + 1) = 2;
-    clear_byte_and_words(cbw_obj);
-    assert(cbw_obj[0] == 0);
-    assert(*(uint32_t *)(cbw_obj + 1) == 0);
-
-    static uint8_t cbf4_obj[5];
-    cbf4_obj[4] = 9;
-    clear_byte_field_4(cbf4_obj);
-    assert(cbf4_obj[4] == 0);
-
     assert(get_indexed_halfword_address(0x1000, 5) == 0x1000 + 10 + 0x10c);
     assert(get_indexed_halfword_address(0x1000, 0x10) == 0);
 
@@ -2628,8 +2598,6 @@ void run_runtime_tests(void)
     gntw_obj[1] = (uint32_t)(uintptr_t)gntw_inner;
     assert(get_nested_table_word(gntw_obj) == 0x55);
 
-    noop_t();
-
     static uint8_t arena_obj[0x5d4];
     ((uint32_t *)arena_obj)[0x5d0 / 4] = 0;
     uint32_t arena_slot = allocate_from_arena((uint32_t *)arena_obj, 0x20);
@@ -2702,11 +2670,6 @@ void run_runtime_tests(void)
     static uint8_t sb1ac6_obj[0x1ac7];
     set_byte_1ac6_ff(sb1ac6_obj);
     assert(sb1ac6_obj[0x1ac6] == 0xff);
-
-    static uint32_t cwph_obj[3];
-    cwph_obj[0] = 1; cwph_obj[1] = 2; *(uint16_t *)(cwph_obj + 2) = 3;
-    clear_word_pair_and_halfword(cwph_obj);
-    assert(cwph_obj[0] == 0 && cwph_obj[1] == 0);
 
     static const uint32_t sq58_val[4] = { 1, 2, 3, 4 };
     static uint32_t sq58_obj[0x68 / 4];
@@ -2885,25 +2848,6 @@ void run_runtime_tests(void)
     noop_bf();
     noop_c0();
 
-    static uint32_t gif10c_b_obj[0x110 / 4];
-    gif10c_b_obj[0x10c / 4] = 0x2000;
-    assert(get_indexed_field_10c_b(gif10c_b_obj, 3) == 0x2000 + 3 * 0x1c);
-
-    static uint8_t glb3c_b_obj[0x3d];
-    glb3c_b_obj[0x3c] = 7;
-    assert(get_low_bit_3c_b(glb3c_b_obj) == 1);
-    glb3c_b_obj[0x3c] = 6;
-    assert(get_low_bit_3c_b(glb3c_b_obj) == 0);
-
-    static uint32_t gntw8_inner[0x34 / 4];
-    gntw8_inner[0x30 / 4] = 0;
-    static uint32_t gntw8_leaf[3];
-    gntw8_leaf[2] = 0x99;
-    gntw8_inner[0] = (uint32_t)(uintptr_t)gntw8_leaf;
-    static uint32_t gntw8_obj[2];
-    gntw8_obj[1] = (uint32_t)(uintptr_t)gntw8_inner;
-    assert(get_nested_word_8(gntw8_obj) == 0x99);
-
     noop_c1();
 
     static uint32_t af3c_obj[0x40 / 4];
@@ -2988,9 +2932,6 @@ void run_runtime_tests(void)
     assert(ssl2_obj[2] == (uint32_t)(uintptr_t)(ssl2_obj + 2));
     assert(ssl2_obj[3] == (uint32_t)(uintptr_t)(ssl2_obj + 2));
 
-    noop_c7();
-    noop_c8();
-
     static uint32_t ilrf_obj[0xc0 / 4];
     initialize_link_record_full(ilrf_obj);
     assert(ilrf_obj[1] == 0xffffffffu && ilrf_obj[0x25] == 0);
@@ -3024,17 +2965,10 @@ void run_runtime_tests(void)
     ((int8_t *)gs4e_obj)[0x4e] = 3;
     assert(get_state_4e_mapped(gs4e_obj) == 1);
 
-    noop_c9();
-    noop_ca();
-
     static uint8_t cb5c_obj[0x5d];
     cb5c_obj[0x5c] = 5;
     clear_byte_5c(cb5c_obj);
     assert(cb5c_obj[0x5c] == 0);
-
-    static uint32_t cw034_obj[4];
-    clear_word_0_and_byte_3_4(cw034_obj);
-    assert(cw034_obj[0] == 0x10000 && ((uint8_t *)cw034_obj)[0xd] == 0);
 
     static uint32_t cw1011_obj[5];
     clear_word_0_and_byte_10_11(cw1011_obj);
@@ -3064,11 +2998,6 @@ void run_runtime_tests(void)
     assert(ptc_obj[4 / 4] == 1);
 
     noop_cb();
-
-    static uint32_t cw14c_obj[6];
-    cw14c_obj[0x14 / 4] = 5;
-    clear_word_14_and_set_c(cw14c_obj, 0x99);
-    assert(cw14c_obj[0x14 / 4] == 0 && cw14c_obj[0xc / 4] == 0x99);
 
     static uint32_t csr970c_obj[0x18];
     csr970c_obj[3] = 1; ((uint8_t *)csr970c_obj)[0x16] = 2;
@@ -4251,14 +4180,6 @@ void run_batch_m_tests(void)
     cpw68_obj[0] = (uint32_t)(uintptr_t)cpw68_tab;
     cpw68_tab[0x68 / 4] = 0x123;
     assert(check_pointed_word_68(cpw68_obj) == 0x123);
-
-    static uint32_t gpb4_obj[1];
-    static uint8_t gpb4_sub[8];
-    assert(get_pointed_byte_4_zero(gpb4_obj) == 1);
-    gpb4_obj[0] = (uint32_t)(uintptr_t)gpb4_sub;
-    assert(get_pointed_byte_4_zero(gpb4_obj) == 1);
-    gpb4_sub[4] = 1;
-    assert(get_pointed_byte_4_zero(gpb4_obj) == 0);
 }
 
 void run_batch_n_tests(void)
@@ -4772,19 +4693,6 @@ void run_batch_s_tests(void)
     ss2b_mid[0xbd8] = 1;
     assert(set_state_2_if_flag_b(ss2b_obj) == 1);
     assert(*(uint16_t *)(ss2b_obj + 0xc) == 2);
-
-    static uint8_t ss8_obj[0x10];
-    static uint8_t ss8_mid[0xb0c];
-    static uint8_t ss8_tab[0x98];
-    *(uint32_t *)(ss8_obj + 4) = (uint32_t)(uintptr_t)ss8_mid;
-    *(uint32_t *)(ss8_mid + 0xb08) = (uint32_t)(uintptr_t)ss8_tab;
-    *(int16_t *)(ss8_tab + 0x96) = 0;
-    assert(set_state_8_if_halfword_96_zero(ss8_obj) == 1);
-    assert(*(uint16_t *)(ss8_obj + 0xc) == 8);
-    *(int16_t *)(ss8_tab + 0x96) = 1;
-    *(uint16_t *)(ss8_obj + 0xc) = 0;
-    assert(set_state_8_if_halfword_96_zero(ss8_obj) == 1);
-    assert(*(uint16_t *)(ss8_obj + 0xc) == 0);
 
     static uint8_t ob3eff_obj[0x3f08];
     or_byte_3eff_set_3f05_4(ob3eff_obj);
